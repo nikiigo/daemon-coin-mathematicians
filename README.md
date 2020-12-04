@@ -1,4 +1,5 @@
-# daemon-coin-mathematicians
+# daemon-coin-mathematicians   
+probablility task (https://youtu.be/oAj4xPXKzwg) simulation
 #### Some results of calculations:
 Patterns: [01 01].  The survival ratio is approximately 55.10%.  
 Patterns: [0 0]. The survival ratio is approximately 66.78%.  
