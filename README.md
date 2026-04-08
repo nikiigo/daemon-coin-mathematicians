@@ -1,10 +1,64 @@
-# daemon-coin-mathematicians   
-probablility game (https://youtu.be/oAj4xPXKzwg) simulation  
-Условие: Злой Дух поймал двух популяризаторов науки, Дмитрия Побединского и Алексея Савватеева, и посадил их в разные комнаты своего страшного дома. Затем Злой Дух подбросил симметричную монетку бесконечное количество раз. Все результаты чётных бросков он сообщил Дмитрию, а все результаты нечётных – Алексею. Далее Дух предлагает каждому популяризатору назвать номер любого подбрасывания, результат которого ему не известен. То есть Дмитрий должен назвать нечётный номер, а Алексей – чётный. Если результаты бросков, названных Дмитрием и Алексеем, одинаковые, то Злой Дух дарит каждому популяризатору свободу. Если же результаты бросков отличаются, то Злой Дух съедает популяризаторов в надежде поумнеть. Алексей и Дмитрий, конечно, знают о повадках Злого Духа и могли заранее до похищения договориться о стратегиях. Какую стратегию им выбрать, чтобы вероятность спасения была больше 50%?
-#### Some examples of calculations:
-This program calculates probability of survival when mathematicians say position (index) where the pattern was firstly found in their series of random 0 and 1   
-Patterns: [01 01].  The survival ratio is approximately 55.10%.  
-Patterns: [0 0]. The survival ratio is approximately 66.78%.  
-Patterns: [01 00]. The survival ratio is approximately 62.55%.  
-Random pattern with length 3. The survival ratio is approximately 51.78%.
+# daemon-coin-mathematicians
 
+Monte Carlo simulation for the “daemon coin” probability game  
+Inspired by: https://youtu.be/oAj4xPXKzwg
+
+---
+
+## Overview
+
+This project simulates a coordination problem where two players must independently select unknown coin flips in a way that maximizes their probability of survival.
+
+The simulation evaluates strategies based on detecting the **first occurrence of a pattern** in a binary sequence.
+
+---
+
+## Problem Statement
+
+An Evil Spirit captures two mathematicians and isolates them in separate rooms.
+
+He flips a fair coin infinitely many times:
+
+- Player A (Dmitry) sees results of **even-indexed** flips
+- Player B (Alexey) sees results of **odd-indexed** flips
+
+Each player must then choose an index of a flip they **do not know**:
+
+- Dmitry selects an **odd** index
+- Alexey selects an **even** index
+
+### Outcome
+
+- If both chosen flips have the **same value** → they survive  
+- Otherwise → they lose
+
+Before separation, they can agree on a deterministic strategy.
+
+---
+
+## Simulation Model
+
+The infinite process is approximated using finite random sequences.
+
+For each trial:
+
+1. Two independent binary sequences are generated
+2. Each player searches for the **first occurrence** of a predefined pattern
+3. Each player uses the position found in their own sequence
+4. That position is applied to the *other player's sequence*
+5. If the resulting bits match → success
+
+---
+
+## Strategy
+
+Each player applies:
+
+- pattern search using **regular expressions**
+- selection of the **first match index**
+
+Example:
+
+```python
+m1_pattern = r"0"
+m2_pattern = r"0"
